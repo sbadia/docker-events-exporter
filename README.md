@@ -14,7 +14,7 @@ pod, container and namespace.
 You can apply this ds on our cluster, in order to expose API events as
 prometheus metrics.
 
-```
+```json
 {
   "apiVersion": "extensions/v1beta1",
   "kind": "DaemonSet",
@@ -72,7 +72,7 @@ prometheus metrics.
 
 And then fetch events on port `9000`
 
-```
+```bash
 ❯ curl 10.252.8.147:9000
 # HELP docker_events Docker events
 # TYPE docker_events counter
