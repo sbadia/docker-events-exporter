@@ -40,10 +40,10 @@ def watch_events():
         attributes = event['Actor']['Attributes']
         if event['Type'] == 'network':
             continue
-        if event['status'].startswith(('exec_create', 'exec_detach')):
-            continue
         if 'io.kubernetes.docker.type' in attributes:
             if attributes['io.kubernetes.container.name'] == 'POD':
+                continue
+            if event['status'].startswith(('exec_create', 'exec_detach')):
                 continue
             msg = '{} on {} ({})'.format(
                 event['status'].strip(),
