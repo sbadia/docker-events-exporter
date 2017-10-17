@@ -30,6 +30,10 @@ prometheus metrics.
       "metadata": {
         "labels": {
           "name": "events-notifier"
+        },
+        "annotations": {
+          "prometheus.io/scrape": "true",
+          "prometheus.io/port": "9000"
         }
       },
       "spec": {
@@ -51,6 +55,12 @@ prometheus metrics.
               {
                 "name": "dockersock",
                 "mountPath": "/var/run/docker.sock"
+              }
+            ],
+            "ports": [
+              {
+                "name": "prometheus",
+                "containerPort": 9000
               }
             ]
           }
@@ -89,4 +99,7 @@ for example about OOM events…
 ALERT oom
   IF rate(docker_events{event="oom",kubernetes_namespace="inf"}[1m]) > 0
   LABELS { routing = "slackonly" }
+  ANNOTATIONS {
+      summary = "{{ $labels.event }} - {{ $labels.env }} - {{ $labels.pod }}"
+  }
 ```
