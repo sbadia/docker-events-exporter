@@ -96,10 +96,12 @@ Then you can imagine to configure prometheus alerts based on thoses metrics,
 for example about OOM events…
 
 ```
-ALERT oom
-  IF rate(docker_events{event="oom",kubernetes_namespace="inf"}[1m]) > 0
-  LABELS { routing = "slackonly" }
-  ANNOTATIONS {
-      summary = "{{ $labels.event }} - {{ $labels.env }} - {{ $labels.pod }}"
-  }
+groups:
+- name: host_health
+  - alert: oom
+    expr: rate(docker_events{event="oom",kubernetes_namespace="inf"}[1m]) > 0
+    labels:
+      routing: slackonly
+    annotations:
+      link: '{{ $labels.event }} - {{ $labels.env }} - {{ $labels.pod }}'
 ```
